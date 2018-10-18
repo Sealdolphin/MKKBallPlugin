@@ -97,8 +97,7 @@ public:
 	// OnDrawMultiDeck is called for each frame (whatever the crossfader position).
 	// videoDecks is an array of nbVideos integers, giving the decks number of each deck that has a video available.
 	// the array is sorted by order of "importance" of the videos (videoLeft and videoRight first, then playing video, etc).
-	// call DrawDeck() to draw the images for each deck with the specified vertices.	// call GetVertices to initialize the vertices to their default value, and modify it. (or pass NULL to DrawDeck() to 
-	use the default)
+	// call DrawDeck() to draw the images for each deck with the specified vertices.	// call GetVertices to initialize the vertices to their default value, and modify it. (or pass NULL to DrawDeck() to use the default)
 	// NOTE: if you want to retrieve the value of the video crossfader, call GetInfo("video_crossfader");
 		virtual HRESULT VDJ_API OnDrawMultiDeck(int nbVideoDecks, int *videoDecks) = 0;
 
