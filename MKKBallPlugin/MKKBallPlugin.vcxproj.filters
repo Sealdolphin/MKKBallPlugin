@@ -15,22 +15,25 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MKKBallPlugin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="dllmain.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MKKBallPlugin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vdjPlugin8.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vdjVideo8.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vdjDsp8.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
