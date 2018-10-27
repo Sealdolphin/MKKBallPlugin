@@ -8,11 +8,14 @@ Ez a plugin a forráskódok alapján egy .dll fájlt generál. Ehhez használhat
 A Visual Studio projekt fájl amennyiben nem képes lefordulni, az alábbi projektbeállításokat kell megfontolni: (Properties)
 Általánosságban
 - General/Windows SDK Platform verziója up-to-date
+
 LCPSTR
 - General/CharacterSet = Use Multi-Byte Character Set
+
 "Cannot open source file..."
 - VC++ Directories/Include Directories tartalmazza: $(IncludePath);$(DXSDK_DIR)Include
 - VC++ Directories/Library Directories tartalmazza: $(LibraryPath);$(DXSDK_DIR)Lib\x64 (x86 a 32 Bites verzión)
+
 "Unexpected end of file, while looking for precompiled header"
 - C/C++/Precompiled Headers/Precompiled Headers = Not Using Precompiled headers
 
