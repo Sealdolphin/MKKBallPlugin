@@ -2,6 +2,7 @@
 #define MYPLUGIN8_H
 
 #include "vdjVideo8.h"
+#include "MKKLogger.h"
 
 #if (defined(VDJ_WIN))
 #define DIRECT3D_VERSION 0x9000
@@ -39,6 +40,8 @@ private:
 	HRESULT OnVideoResize(int VidWidth, int VidHeight);
 	int VideoWidth;
 	int VideoHeight;
+
+	MKKLogger logger;
 
 #if (defined(VDJ_WIN))
 
