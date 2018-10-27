@@ -13,6 +13,7 @@ LCPSTR
 - General/CharacterSet = Use Multi-Byte Character Set
 
 "Cannot open source file..."
+- A DirectX 9-es verziója telepítve van a számítógépen (Újabb verzióval még nem jó, de ezen dolgozunk)
 - VC++ Directories/Include Directories tartalmazza: $(IncludePath);$(DXSDK_DIR)Include
 - VC++ Directories/Library Directories tartalmazza: $(LibraryPath);$(DXSDK_DIR)Lib\x64 (x86 a 32 Bites verzión)
 
