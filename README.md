@@ -2,7 +2,7 @@
 VideoFx plugin a virtual DJ 8-hoz. MKK-s bálok kivetítésére.
 
 # Hogyan működik?
-Ez a plugin a forráskódok alapján egy .dll fájlt generál. Ehhez használható a felépített Visual Studio project.
+Ez a plugin valós időben képes a VirtualDJ aktuális számának információit (Szerző, cím, tánc/stílus) átküldeni egy megfelelő vevő programnak. A forráskódok alapján egy .dll fájlt kell generálni, ezt használja a VirtualDJ. A generáláshoz használható a felépített Visual Studio projekt.
 
 # Visual Studio
 A Visual Studio projekt fájl amennyiben nem képes lefordulni, az alábbi projektbeállításokat kell megfontolni: (Properties)
