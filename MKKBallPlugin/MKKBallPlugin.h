@@ -3,6 +3,9 @@
 
 #include "vdjVideo8.h"
 #include "MKKLogger.h"
+#include "json.hpp"
+
+using json = nlohmann::json;
 
 #if (defined(VDJ_WIN))
 #define DIRECT3D_VERSION 0x9000
@@ -42,6 +45,8 @@ private:
 	int VideoHeight;
 
 	MKKLogger logger;
+	std::string ip_address;
+	std::string port;
 
 #if (defined(VDJ_WIN))
 
@@ -68,8 +73,12 @@ public:
 	std::string getArtist() { return s_artist; }
 	std::string getGenre() { return s_genre; }
 	std::string getNextGenre() { return s_next_genre; }
+
+	std::string createJSON();
+
 private:
 	static const int max_length = 50;
+	json TrackData;
 
 	std::string s_title;
 	std::string s_artist;
