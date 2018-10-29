@@ -23,7 +23,7 @@ const D3DCOLOR green = D3DCOLOR_RGBA(0, 255, 0, 255);
 const D3DCOLOR blue = D3DCOLOR_RGBA(0, 0, 255, 255);
 const D3DCOLOR translucide_black = D3DCOLOR_RGBA(0, 0, 0, 120);
 
-
+///Ez a plugint megvalósító osztály
 class MKKBallMaker : public IVdjPluginVideoFx8
 {
 public:
@@ -55,6 +55,27 @@ private:
 	GLuint GLTexture;
 
 #endif
+};
+
+
+///Ez egy zenét megvalósító osztály
+class MKKTrack {
+
+public:
+	MKKTrack(MKKBallMaker *parent);
+
+	std::string getTitle() { return s_title; }
+	std::string getArtist() { return s_artist; }
+	std::string getGenre() { return s_genre; }
+	std::string getNextGenre() { return s_next_genre; }
+private:
+	static const int max_length = 50;
+
+	std::string s_title;
+	std::string s_artist;
+	std::string s_genre;
+	std::string s_next_genre;
+
 };
 
 #endif
