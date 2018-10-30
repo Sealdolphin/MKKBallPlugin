@@ -9,24 +9,25 @@ enum LogLevel {
 	LL_ERROR
 };
 
+enum G_ID {
+	BASIC_INFO,
+	TRACK_INFO
+
+};
 
 class MKKLogger
 {
 public:
-	void generateLogFile(std::string filePath, int intervalms = 1);
-	void createLog(LogLevel level, std::string message);
-	void setRepeatSecurity(bool security = true);
+	void generateLogFile(std::string filePath, int intervals = 1);
+	void createLog(LogLevel level, std::string message, int groupID = BASIC_INFO);
 
 private:
 	
-	static int repeatID;
-	static bool repeatSecurity;
-
 	static std::string logFilePath;
 
 	std::fstream logFileStream;
 	int interval;
 	time_t lastLog;
-	int lastID;
+	static int lastID;
 
 };

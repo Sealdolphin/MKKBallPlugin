@@ -39,14 +39,16 @@ public:
 	HRESULT VDJ_API OnStop();
 	HRESULT VDJ_API OnDraw();
 
+	HRESULT VDJ_API OnParameter(int id);
+	HRESULT VDJ_API OnGetParameterString(int id, char *outParam, int outParamSize);
+
 private:
 	HRESULT OnVideoResize(int VidWidth, int VidHeight);
 	int VideoWidth;
 	int VideoHeight;
 
 	MKKLogger logger;
-	std::string ip_address;
-	std::string port;
+	
 
 #if (defined(VDJ_WIN))
 
@@ -60,6 +62,25 @@ private:
 	GLuint GLTexture;
 
 #endif
+
+	//Gombok
+	std::string ip_address;
+	std::string port;
+	std::string message_of_the_dj;
+	bool ladies_choice;
+	int is_connected;
+
+	//Enum a gombok detektálásához
+protected:
+	typedef enum _ID_Interface {
+		BTN_CONNECT,
+		BTN_SETADDR,
+		BTN_SETPORT,
+		BTN_SETMSG,
+		BTN_LADIES
+
+	} ID_Interface;
+
 };
 
 
@@ -80,6 +101,8 @@ private:
 	static const int max_length = 50;
 	json TrackData;
 
+	double time_rem_min;
+	double time_rem_sec;
 	std::string s_title;
 	std::string s_artist;
 	std::string s_genre;
