@@ -64,20 +64,25 @@ private:
 #endif
 
 	//Gombok
-	std::string ip_address;
-	std::string port;
-	std::string message_of_the_dj;
+	char ip_address[64];
+	char port[64];
+	char message_of_the_dj[64];
+	char connection_status[64];
 	bool ladies_choice;
-	int is_connected;
+	bool is_connected;
+	int conSwitch_status;
 
 	//Enum a gombok detektálásához
 protected:
 	typedef enum _ID_Interface {
-		BTN_CONNECT,
+		SWITCH_CONNECT,
 		BTN_SETADDR,
 		BTN_SETPORT,
 		BTN_SETMSG,
-		BTN_LADIES
+		BTN_LADIES,
+		LB_IPADDR,
+		LB_PORT,
+		LB_CONN_STATUS
 
 	} ID_Interface;
 
@@ -98,7 +103,7 @@ public:
 	std::string createJSON();
 
 private:
-	static const int max_length = 50;
+	static const int max_length = 64;
 	json TrackData;
 
 	double time_rem_min;

@@ -4,6 +4,7 @@
 /*
 Statuikus változók
 */
+bool MKKLogger::fileBusy = false;
 int MKKLogger::lastID = BASIC_INFO;
 std::string MKKLogger::logFilePath = "MKKLog.txt";
 
@@ -43,6 +44,11 @@ void MKKLogger::generateLogFile(std::string filePath, int intervals)
 void MKKLogger::createLog(LogLevel level, std::string message, int groupID)
 {
 
+	while (fileBusy) {
+		//Do nothing
+	}
+
+	fileBusy = true;
 	std::time_t t = time(0);
 	std::tm now;
 	localtime_s(&now, &t);
@@ -57,4 +63,5 @@ void MKKLogger::createLog(LogLevel level, std::string message, int groupID)
 
 	lastLog = t;
 	lastID = groupID;
+	fileBusy = false;
 }

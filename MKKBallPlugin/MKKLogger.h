@@ -24,6 +24,7 @@ public:
 private:
 	
 	static std::string logFilePath;
+	static bool fileBusy;
 
 	std::fstream logFileStream;
 	int interval;

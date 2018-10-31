@@ -2,7 +2,7 @@
 NETWORK.CPP
 */
 #define WIN32_LEAN_AND_MEAN
-#define _WIN32_WINNT 0x501 //Magic
+#define _WIN32_WINNT 0x501 //Some kind of black magic
 
 #include <windows.h>
 #include <winsock2.h>
@@ -12,23 +12,24 @@ NETWORK.CPP
 
 #include "MKKSocket.h"
 
-
 // Need to link with Ws2_32.lib, Mswsock.lib, and Advapi32.lib
 #pragma comment (lib, "Ws2_32.lib")
 #pragma comment (lib, "Mswsock.lib")
 #pragma comment (lib, "AdvApi32.lib")
 
+//Using STD library structures
 using std::string;
 using std::cout;
 using std::endl;
 
-int Network::init(void) {		// Initialize Winsock
+
+//-------------------------------------------------------------------------
+int Network::init(void) {
+	// Initialize Winsock
 	info_result = WSAStartup(MAKEWORD(2, 2), &wsaData);
 	if (info_result != 0) {
-		
-		networkLogger.createLog(LL_ERROR, "WSAStartUp failed.");
-
-		return 1;
+		//WSA Startup failed
+		return ERR_WSA_FAIL;
 	}
 	//Free the memory and set up addrinfo hints
 	ZeroMemory(&addr_hints, sizeof(addr_hints));
@@ -36,20 +37,16 @@ int Network::init(void) {		// Initialize Winsock
 	addr_hints.ai_socktype = SOCK_STREAM;
 	addr_hints.ai_protocol = IPPROTO_TCP;
 
-	networkLogger.createLog(INFO, "WSAStartUp successful.");
-
-	return 0;
+	return ERR_NOERR;
 }
-
-int Network::resolve(string server, string arg_port) {		// Resolve the server address and port
-	//Setting domain
+//-------------------------------------------------------------------------
+int Network::resolve(string server, string arg_port) {
+	//Setting up domain
 	if (server == "") {
-		//Searching default domain
+		//Searching for default domain
 		if (domain == nullptr) {
-
-			networkLogger.createLog(LL_ERROR, "No domain was given!");
-
-			return 1;
+			//No domain name was given!
+			return ERR_NO_DOMAIN;
 		}
 	}
 	else {
@@ -61,20 +58,17 @@ int Network::resolve(string server, string arg_port) {		// Resolve the server ad
 	port = new char[arg_port.size() + 1];
 	strcpy(port, arg_port.c_str());
 
+	//Resolving given domain name
 	info_result = getaddrinfo(domain, port, &addr_hints, &addr_result);
 	if (info_result != 0) {
-
-		networkLogger.createLog(LL_ERROR, "Getaddrinfo failed, cannot resolve domain.");
-
+		//Getaddrinfo failed. Cannot resolve given address
 		WSACleanup();
-		return 1;
+		return ERR_GETADDRINFO_FAIL;
 	}
 
-	networkLogger.createLog(INFO, "Domain resolved");
-
-	return 0;
+	return ERR_NOERR;
 }
-
+//-------------------------------------------------------------------------
 int Network::connect_server(void) {
 	// Attempt to connect to an address until one succeeds
 	for (addr_ptr = addr_result; addr_ptr != NULL; addr_ptr = addr_ptr->ai_next) {
@@ -82,14 +76,12 @@ int Network::connect_server(void) {
 		// Create a SOCKET for connecting to server
 		ConnectSocket = socket(addr_ptr->ai_family, addr_ptr->ai_socktype, addr_ptr->ai_protocol);
 		if (ConnectSocket == INVALID_SOCKET) {
-			
-			networkLogger.createLog(LL_ERROR, "Socket is invalid.");
-
+			//Socket is invalid. Maybe closed or terminated?
 			WSACleanup();
-			return 1;
+			return ERR_INVALID_SOCK;
 		}
 
-		// Connect to server.
+		// Connect to the server.
 		info_result = connect(ConnectSocket, addr_ptr->ai_addr, (int)addr_ptr->ai_addrlen);
 		if (info_result == SOCKET_ERROR) {
 			closesocket(ConnectSocket);
@@ -101,107 +93,81 @@ int Network::connect_server(void) {
 	freeaddrinfo(addr_result);
 
 	if (ConnectSocket == INVALID_SOCKET) {
-		
-		networkLogger.createLog(LL_ERROR, "Connection failed.");
-
+		//Connection failed, socket was invalidated.
 		WSACleanup();
-		return 1;
-	}
-	else {
-
-		networkLogger.createLog(INFO, "Connection established.");
-
+		return ERR_CONNECT_FAIL;
 	}
 
 	//Make socket blocking/nonblocking
 	u_long block = 1;
 	info_result = ioctlsocket(ConnectSocket, FIONBIO, &block);
 	if (info_result != NO_ERROR) {
-		
-		networkLogger.createLog(WARNING, "Socket is not non-blocking. Suggest termination.");
-
+		//Socket is blocking, suggest termination
 	}
-	return 0;
+	return ERR_NOERR;
 }
-
+//-------------------------------------------------------------------------
 int Network::send_message(string msg) {
-	if (msg == "0") return 1;
+	//Sent message is null or empty
+	if (msg == "0") return ERR_NULLMSG;
+	//Clearing sendbuffer and filling with the message
 	if (sendbuffer != nullptr) delete[] sendbuffer;
 	sendbuffer = new char[msg.length() + 1];
 	strcpy(sendbuffer, msg.c_str());
 	sendbuffer[msg.length()] = 0;
 
+	//send buffer through the network
 	info_result = send(ConnectSocket, sendbuffer, (int)strlen(sendbuffer) + 1, 0);
 
 	if (info_result == SOCKET_ERROR) {
-	
-		networkLogger.createLog(LL_ERROR, "Sending data failed.");
-
+		//Sending failed. 
 		closesocket(ConnectSocket);
 		WSACleanup();
-		return 1;
+		return ERR_SEND_FAIL;
 	}
 
-
-	networkLogger.createLog(INFO, "Data Sent: " + msg);
-
-
-	return 0;
+	return ERR_NOERR;
 }
-
+//-------------------------------------------------------------------------
 int Network::recv_message(void) {
 	// Receive until the peer closes the connection
 	char c;
 
 	while ((info_result = recv(ConnectSocket, &c, 1, 0)) == 1) {
 		receivebuffer[recvbuflen++] = c;
-
 		if (c == 0) {
-
-			networkLogger.createLog(INFO, "Data received.");
-
+			//Data received
 			recvbuflen = 0;
-			return 0;
-
+			return ERR_NOERR;
 		}
-
 	}
 
 	if (info_result == 0) {
-		
-		networkLogger.createLog(LL_ERROR, "Connection lost to server.");
-
-		return 1;
+		return ERR_CONNECTION_LOST;
 	}
 
-	return 2;
+	return ERR_RECEIVE_FAIL;
 }
-
+//-------------------------------------------------------------------------
 int Network::shutdown_server(void) {
 	// shutdown the connection since no more data will be sent
 	info_result = shutdown(ConnectSocket, SD_BOTH);
 	if (info_result == SOCKET_ERROR) {
 		
-		networkLogger.createLog(LL_ERROR, "Shutdown failed.");
-
 		closesocket(ConnectSocket);
 		WSACleanup();
-		return 1;
+		return ERR_SHUTDOWN_FAIL;
 	}
-	
-	networkLogger.createLog(INFO, "Server closed.");
-
-	return 0;
+	return ERR_NOERR;
 }
-
+//-------------------------------------------------------------------------
 Network::~Network() {
-	// cleanup
+	// cleanup and free memory
+
 	closesocket(ConnectSocket);
 	WSACleanup();
-
-	networkLogger.createLog(INFO, "Network has been destroyed.");
-
 	if (sendbuffer != nullptr) delete[] sendbuffer;
 	delete[] domain;
 	delete[] port;
 }
+//-------------------------------------------------------------------------
