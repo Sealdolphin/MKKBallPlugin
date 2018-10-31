@@ -1,3 +1,6 @@
+#Everything else
+*.*
+
 #Do not exclude .cpp and .h files
 !*.cpp
 !*.h
@@ -5,5 +8,9 @@
 #Also need the .dll-s
 !*.dll
 
-#Everything else
-*.*
+#Also needed qt
+!*.pro
+!*._example
+!*.qml
+!*.qrc
+

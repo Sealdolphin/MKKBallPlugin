@@ -1,0 +1,7 @@
+[BackGround]
+Color=Green
+Image=file:bg.png
+
+[currentlyPlayed]
+FontColor=cornflowerblue
+X=0.4
