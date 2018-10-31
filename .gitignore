@@ -13,4 +13,6 @@
 !*._example
 !*.qml
 !*.qrc
+!*.rep
+
 

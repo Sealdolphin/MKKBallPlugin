@@ -1,0 +1,9 @@
+class DisplayData
+{
+    PROP(QString title1)
+    PROP(QString artist1)
+    PROP(QString genre1)
+    PROP(QString genre2)
+    PROP(int minLeft)
+    PROP(int secLeft)
+}
