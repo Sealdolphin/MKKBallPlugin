@@ -5,6 +5,8 @@
 #include <QQmlContext>
 #include <QSettings>
 #include "settings.h"
+#include "tcplistener.h"
+#include "packetparser.h"
 
 int main(int argc, char *argv[])
 {
@@ -21,6 +23,10 @@ int main(int argc, char *argv[])
     Settings settings;
     engine.rootContext()->setContextProperty("mainSettings",&settings);
 
+    TcpListener tcpListener;
+    PacketParser parser(&data);
+
+    QObject::connect(&tcpListener, &TcpListener::packetArrived, &parser, &PacketParser::processPacket);
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;

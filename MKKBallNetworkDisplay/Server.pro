@@ -15,7 +15,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
     DisplayData.cpp \
-    settings.cpp
+    settings.cpp \
+    tcplistener.cpp \
+    packetparser.cpp
 
 RESOURCES += qml.qrc
 
@@ -34,4 +36,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     DisplayData.h \
-    settings.h
+    settings.h \
+    tcplistener.h \
+    packetparser.h
