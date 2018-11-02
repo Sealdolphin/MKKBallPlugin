@@ -17,11 +17,14 @@ SOURCES += \
     DisplayData.cpp \
     settings.cpp \
     tcplistener.cpp \
-    packetparser.cpp
+    packetparser.cpp \
+    roclient.cpp
 
 RESOURCES += qml.qrc
 
 REPC_SOURCE += displaydata.rep
+
+REPC_REPLICA += displaydata.rep
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -34,8 +37,14 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
+android {
+DEFINES += CLIENT_MODE=true
+
+}
+
 HEADERS += \
     DisplayData.h \
     settings.h \
     tcplistener.h \
-    packetparser.h
+    packetparser.h \
+    roclient.h
