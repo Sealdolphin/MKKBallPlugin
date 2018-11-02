@@ -18,6 +18,16 @@ static QString get(QJsonObject& obj, QString key)
     return "";
 }
 
+static double getDouble(QJsonObject& obj, QString key)
+{
+    if (obj.contains(key))
+    {
+        return obj.value(key).toDouble();
+    }
+    qInfo() << "Failed to get key: " << key;
+    return 0.0;
+}
+
 void PacketParser::processPacket(QByteArray data)
 {
     qInfo() << "Packet arrived: " << data.toStdString().c_str();
@@ -32,6 +42,6 @@ void PacketParser::processPacket(QByteArray data)
     displayData->setTitle1(get(JObj,"title") );
     displayData->setGenre1(get(JObj,"genre") );
     displayData->setGenre2(get(JObj,"next_song") );
-    displayData->setMinLeft(get(JObj,"min_left").toInt() );
-    displayData->setSecLeft(get(JObj,"sec_left").toInt());
+    displayData->setMinLeft(getDouble(JObj,"min_left") );
+    displayData->setSecLeft(getDouble(JObj,"sec_left"));
 }

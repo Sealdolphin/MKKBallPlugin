@@ -13,7 +13,7 @@ Settings::Settings(QObject *parent) : QObject(parent), settings("mkksettings.ini
 
 int Settings::getFontSize(QString name, int windowHeight)
 {
-    return getValue(name,"/FontSize",0.1).toDouble() * windowHeight;
+    return getValue(name,"/FontSize",0.08).toDouble() * windowHeight;
 }
 
 QString Settings::getFontColor(QString name)

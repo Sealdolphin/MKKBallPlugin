@@ -5,7 +5,6 @@ Text {
     property string cname : "Unknown"
     property double cXR: 0.1
     property double cYR: 0.1
-    property double cFontSizeRatio: 0.1
     property var window
 
     x: mainSettings.getX(cname,cXR,window.height)

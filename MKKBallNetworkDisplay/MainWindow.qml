@@ -10,6 +10,14 @@ Window {
     title: qsTr("Hello World")
     color: mainSettings.bgColor
 
+    function timeString(min, secs) {
+        var r = "" + secs;
+        while (r.length < 2) {
+            r = "0" + r;
+        }
+        return min + ":" + secs;
+    }
+
     Image {
         anchors.fill: parent
         fillMode: Image.PreserveAspectCrop
@@ -29,9 +37,17 @@ Window {
     MkkText {
         id: currentlyPlayedGenre
         cname: "currentlyPlayedGenre"
-        cXR: 0.60
+        cXR: 0.45
         cYR: 0.05
         text: mainData.genre1
+        window: root
+    }
+    MkkText {
+        id: currentlyPlayedTimeLeft
+        cname: "currentlyPlayedTimeLeft"
+        cXR: 1.1
+        cYR: 0.05
+        text: root.timeString(mainData.minLeft,mainData.secLeft)
         window: root
     }
 
