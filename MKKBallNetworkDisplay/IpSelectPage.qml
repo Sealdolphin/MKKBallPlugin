@@ -43,7 +43,7 @@ Item {
     {
         target: roConnection
         onConnected: {
-            sv.push("MainScreen.qml")
+            sv.push("MainScreenStupid.qml")
         }
     }
 

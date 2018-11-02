@@ -8,6 +8,7 @@ Window {
     visible: true
     width: 640
     height: 360
+    visibility: Window.FullScreen
 
     StackView
     {
