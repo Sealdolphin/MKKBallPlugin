@@ -30,5 +30,5 @@ DisplayData::DisplayData()
         this->setSecLeft(secs);
     }
     );
-    timer->start(1000);
+    //timer->start(1000);
 }

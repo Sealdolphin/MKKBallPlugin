@@ -31,10 +31,12 @@ static double getDouble(QJsonObject& obj, QString key)
 void PacketParser::processPacket(QByteArray data)
 {
     qInfo() << "Packet arrived: " << data.toStdString().c_str();
-    QJsonDocument doc = QJsonDocument::fromJson(data);
+    QString jsonString(data);
+
+    QJsonDocument doc = QJsonDocument::fromJson(jsonString.toUtf8());
     if (doc.isNull() ||  doc.object().isEmpty())
     {
-        qCritical() << "Invalid json packet: " << data.toStdString().c_str();
+        //qCritical() << "Invalid json packet: " << data.toStdString().c_str();
         return;
     }
     auto JObj = doc.object();

@@ -5,6 +5,8 @@
 #include "MKKLogger.h"
 #include "json.hpp"
 
+#include "timer.h"
+
 using json = nlohmann::json;
 
 #if (defined(VDJ_WIN))
@@ -47,7 +49,11 @@ private:
 	int VideoWidth;
 	int VideoHeight;
 
+	//A naplózó egység
 	MKKLogger logger;
+
+	//Az idõzítõ (overflow ellen)
+	Timer timer;
 	
 
 #if (defined(VDJ_WIN))
@@ -65,11 +71,15 @@ private:
 
 	//Gombok
 	char ip_address[64];
-	char port[64];
+	char con_port[64];
 	char message_of_the_dj[64];
 	char connection_status[64];
 	bool ladies_choice;
 	bool is_connected;
+
+	//Gomb Státuszok
+	int btnIPStatus;
+	int btnPortStatus;
 	int conSwitch_status;
 
 	//Enum a gombok detektálásához
@@ -80,9 +90,7 @@ protected:
 		BTN_SETPORT,
 		BTN_SETMSG,
 		BTN_LADIES,
-		LB_IPADDR,
-		LB_PORT,
-		LB_CONN_STATUS
+		LABEL
 
 	} ID_Interface;
 

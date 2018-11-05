@@ -6,7 +6,7 @@ QtObject {
     id: rootItem
     property var controlWindow: ControlWindow {
 
-        title: qsTr("Display controll")
+        title: qsTr("Display control")
 
     }
 

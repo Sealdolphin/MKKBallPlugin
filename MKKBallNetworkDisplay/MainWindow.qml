@@ -15,7 +15,7 @@ Window {
         while (r.length < 2) {
             r = "0" + r;
         }
-        return min + ":" + secs;
+        return min + ":" + r;
     }
 
     Image {
