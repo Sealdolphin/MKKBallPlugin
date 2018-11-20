@@ -18,3 +18,4 @@
 #Dont need the Qt build-servers
 /build-Server*
 
+build-*

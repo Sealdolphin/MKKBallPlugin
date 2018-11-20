@@ -4,5 +4,9 @@
         <file>ControlWindow.qml</file>
         <file>MainWindow.qml</file>
         <file>MkkText.qml</file>
+        <file>clientmain.qml</file>
+        <file>MainScreen.qml</file>
+        <file>IpSelectPage.qml</file>
+        <file>MainScreenStupid.qml</file>
     </qresource>
 </RCC>

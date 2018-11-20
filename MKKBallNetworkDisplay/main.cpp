@@ -7,8 +7,9 @@
 #include "settings.h"
 #include "tcplistener.h"
 #include "packetparser.h"
+#include "roclient.h"
 
-int main(int argc, char *argv[])
+int normalInit(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
@@ -32,4 +33,31 @@ int main(int argc, char *argv[])
         return -1;
 
     return app.exec();
+}
+
+int clientInit(int argc, char *argv[])
+{
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QGuiApplication app(argc, argv);
+    QQmlApplicationEngine engine;
+
+    ROClient roConnection(engine.rootContext());
+    engine.rootContext()->setContextProperty("roConnection",&roConnection);
+
+    Settings settings;
+    engine.rootContext()->setContextProperty("mainSettings",&settings);
+    engine.load(QUrl(QStringLiteral("qrc:/clientmain.qml")));
+    if (engine.rootObjects().isEmpty())
+        return -1;
+
+    return app.exec();
+}
+
+int main(int argc, char *argv[])
+{
+#ifdef CLIENT_MODE
+    clientInit(argc,argv);
+#else
+    normalInit(argc,argv);
+#endif
 }
