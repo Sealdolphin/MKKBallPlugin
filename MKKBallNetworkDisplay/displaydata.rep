@@ -1,5 +1,7 @@
 class DisplayData
 {
+    PROP(QString displayedState) // Can be "music"/"tombola"/"black"
+    PROP(QString winningTicket)
     PROP(QString title1)
     PROP(QString artist1)
     PROP(QString genre1)

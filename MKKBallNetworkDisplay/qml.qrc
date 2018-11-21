@@ -8,5 +8,7 @@
         <file>MainScreen.qml</file>
         <file>IpSelectPage.qml</file>
         <file>MainScreenStupid.qml</file>
+        <file>MainScreenMusic.qml</file>
+        <file>MainScreenTombola.qml</file>
     </qresource>
 </RCC>

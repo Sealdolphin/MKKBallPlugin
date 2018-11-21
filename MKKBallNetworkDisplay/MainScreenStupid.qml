@@ -57,4 +57,18 @@ Rectangle {
         text: " " + mainData.genre2
         window: root
     }
+    Rectangle{
+        anchors.fill: parent
+        z: 10
+        color: "black"
+        visible: mainData.displayedState !== "music"
+        MkkText {
+            cname: "tombolaOngoing"
+            anchors.centerIn: parent
+            font.pixelSize: root.height  * root.fontSize
+            text: "Tombola húzás folyamatban!"
+            color: "white"
+            visible: mainData.displayedState === "tombola"
+        }
+    }
 }
