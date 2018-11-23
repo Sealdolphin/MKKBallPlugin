@@ -4,7 +4,6 @@
 #include <QtGlobal>
 #include <QtMessageHandler>
 #include <random>
-#include <QFileDialog>
 #include <QApplication>
 #include <QFile>
 #include <QMessageBox>
