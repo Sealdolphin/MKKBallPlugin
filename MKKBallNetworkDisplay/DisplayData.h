@@ -8,6 +8,7 @@ class DisplayData : public DisplayDataSimpleSource
     Q_OBJECT
     Q_PROPERTY(QList<QString> tickets READ tickets WRITE setTickets NOTIFY ticketsChanged)
     Q_PROPERTY(QString result READ result WRITE setResult NOTIFY resultChanged)
+    Q_PROPERTY(bool rotating READ rotating WRITE setRotating NOTIFY rotatingChanged)
     QList<QString> m_tickets;
 
 public:
@@ -23,10 +24,16 @@ public:
         return m_result;
     }
 
+    bool rotating() const
+    {
+        return m_rotating;
+    }
+
 public slots:
     void rotateTombola();
     void getTombola();
     void loadTombola(QUrl file);
+    void rotateWinningTicketStep();
 
     void setTickets(QList<QString> tickets)
     {
@@ -45,13 +52,25 @@ public slots:
         emit resultChanged(m_result);
     }
 
+    void setRotating(bool rotating)
+    {
+        if (m_rotating == rotating)
+            return;
+
+        m_rotating = rotating;
+        emit rotatingChanged(m_rotating);
+    }
+
 private:
     void removeTicket(QString ticket);
     QString m_result;
 
+    bool m_rotating;
+
 signals:
 void ticketsChanged(QList<QString> tickets);
 void resultChanged(QString result);
+void rotatingChanged(bool rotating);
 };
 
 #endif // DISPLAYDATA_H

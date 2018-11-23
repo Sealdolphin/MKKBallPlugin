@@ -21,6 +21,7 @@ DisplayData::DisplayData()
     setMinLeft(2);
     setSecLeft(30);
     setTickets({"1111","2222","3333","4444"});
+    setRotating(true);
     QTimer *timer = new QTimer(this);
     connect(timer, &QTimer::timeout,
             [=]()
@@ -47,17 +48,21 @@ DisplayData::DisplayData()
 
 void DisplayData::rotateTombola()
 {
-    setWinningTicket("XXXX");
+    setRotating(true);
+    if (m_tickets.empty())
+    setWinningTicket("EMPTY");
 }
+
+static std::mt19937_64 rnd(std::random_device{}());
 
 void DisplayData::getTombola()
 {
+    setRotating(false);
     if (m_tickets.size() == 0)
     {
         setWinningTicket("EMPTY");
         return;
     }
-    static std::mt19937_64 rnd(std::random_device{}());
     int winnerIdx = rnd() % m_tickets.size();
     QString winner = m_tickets[winnerIdx];
     setWinningTicket(winner);
@@ -74,6 +79,16 @@ void DisplayData::loadTombola(QUrl file)
     auto data = QString(inp.readAll());
     auto x =  data.split(QRegExp("\\s+"),QString::SkipEmptyParts);
     setTickets(x);
+}
+
+void DisplayData::rotateWinningTicketStep()
+{
+    if (m_rotating && m_tickets.size())
+    {
+        int winnerIdx = rnd() % m_tickets.size();
+        QString tempWinner = m_tickets[winnerIdx];
+        setWinningTicket(tempWinner);
+    }
 }
 
 void DisplayData::removeTicket(QString ticket)
