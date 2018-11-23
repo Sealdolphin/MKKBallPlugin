@@ -130,4 +130,44 @@ Window {
         font.pixelSize: 20
     }
 
+    Rectangle
+    {
+        anchors.fill: newsInput
+        anchors.topMargin: -10
+        anchors.bottomMargin: -10
+        color: "white"
+    }
+
+    TextInput {
+        id: newsInput
+        x: 198
+        y: 42
+        width: 423
+        height: 20
+        text: qsTr("Jó a buli ŰÜ üű őö Őö é É")
+        font.pixelSize: 20
+    }
+
+    Button {
+        id: button7
+        x: 410
+        y: 83
+        text: qsTr("Hírdet")
+        onReleased: {
+            mainData.news = newsInput.text
+        }
+    }
+
+    Button {
+        id: button8
+        x: 521
+        y: 83
+        text: qsTr("Töröl")
+        onReleased: {
+            mainData.news = ""
+            newsInput.text = ""
+        }
+
+    }
+
 }

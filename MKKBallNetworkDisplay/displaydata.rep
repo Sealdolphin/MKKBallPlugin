@@ -6,6 +6,7 @@ class DisplayData
     PROP(QString artist1)
     PROP(QString genre1)
     PROP(QString genre2)
+    PROP(QString news)
     PROP(int minLeft)
     PROP(int secLeft)
 }

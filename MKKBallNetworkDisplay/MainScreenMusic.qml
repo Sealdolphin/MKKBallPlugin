@@ -71,4 +71,12 @@ Item {
         text: mainData.genre2
         window: root
     }
+    MkkText {
+        id: news
+        cname: "nextPlayedGenre"
+        cXR: 0.05
+        cYR: 0.875
+        text: mainData.news
+        window: root
+    }
 }
