@@ -1,6 +1,8 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.4
 import QtQuick.Window 2.11
+import QtQuick 2.0
+import QtQuick.Dialogs 1.0
 
 Window {
     property var mainWindow
@@ -94,14 +96,38 @@ Window {
         }
     }
 
+
+    FileDialog {
+        id: fileDialog
+        title: "Please choose a file"
+        folder: shortcuts.home
+        onAccepted: {
+            console.log("You chose: " + fileDialog.fileUrls)
+            mainData.loadTombola(fileDialog.fileUrl)
+        }
+        onRejected: {
+            console.log("Canceled")
+        }
+    }
+
     Button {
         id: button6
         x: 532
         y: 284
         text: qsTr("Load")
         onReleased: {
-            mainData.loadTombola()
+            fileDialog.open()
         }
+    }
+
+    Text {
+        id: text2
+        x: 308
+        y: 426
+        width: 324
+        height: 23
+        text: mainData.result
+        font.pixelSize: 20
     }
 
 }

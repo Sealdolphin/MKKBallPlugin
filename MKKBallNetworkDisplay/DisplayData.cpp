@@ -6,6 +6,9 @@
 #include <random>
 #include <QFileDialog>
 #include <QApplication>
+#include <QFile>
+#include <QMessageBox>
+#include <QRegExp>
 
 DisplayData::DisplayData()
 {
@@ -61,9 +64,16 @@ void DisplayData::getTombola()
     removeTicket(winner);
 }
 
-void DisplayData::loadTombola()
+void DisplayData::loadTombola(QUrl file)
 {
-    //QString fileName = QFileDialog::getOpenFileName(static_cast<QApplication *>(QCoreApplication::instance()), nullptr,"Select firmware file","/","Firmware File (*.hex)");
+    setResult("");
+    QFile inp(file.toLocalFile());
+    if(!inp.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        setResult(QString("Couldn't open file: %1").arg(inp.errorString()));
+    }
+    auto data = QString(inp.readAll());
+    auto x =  data.split(QRegExp("\\s+"),QString::SkipEmptyParts);
+    setTickets(x);
 }
 
 void DisplayData::removeTicket(QString ticket)
