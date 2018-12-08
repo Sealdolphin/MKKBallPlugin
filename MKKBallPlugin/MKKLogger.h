@@ -18,7 +18,7 @@ enum G_ID {
 class MKKLogger
 {
 public:
-	void generateLogFile(std::string filePath, int intervals = 1);
+	int generateLogFile(std::string filePath, int intervals = 1);
 	void createLog(LogLevel level, std::string message, int groupID = BASIC_INFO);
 
 private:

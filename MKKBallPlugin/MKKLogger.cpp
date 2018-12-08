@@ -2,14 +2,14 @@
 #include <ctime>
 
 /*
-Statuikus változók
+Statuikus vÃ¡ltozÃ³k
 */
 bool MKKLogger::fileBusy = false;
 int MKKLogger::lastID = BASIC_INFO;
-std::string MKKLogger::logFilePath = "MKKLog.txt";
+std::string MKKLogger::logFilePath = "C:\\MKKLog\\MKKLog.txt";	//Default path
 
 /*
-A Naplóbejegyzés szintjének átírása a naplóba.
+A NaplÃ³bejegyzÃ©s szintjÃ©nek Ã¡tÃ­rÃ¡sa a naplÃ³ba.
 */
 std::string LevelToString(LogLevel level) {
 	switch (level) {
@@ -26,20 +26,29 @@ std::string LevelToString(LogLevel level) {
 }
 
 /*
-Új napló fájl létrehozása
+Ãšj naplÃ³ fÃ¡jl lÃ©trehozÃ¡sa
 */
-void MKKLogger::generateLogFile(std::string filePath, int intervals)
+int MKKLogger::generateLogFile(std::string filePath, int intervals)
 {
+	
 	interval = intervals;
-	logFilePath = filePath;
-	logFileStream.open(logFilePath, std::fstream::out | std::fstream::app);
+	logFileStream.open(filePath, std::fstream::out | std::fstream::app);
+	int open = logFileStream.is_open();
+	if (open > 0) {
+		logFilePath = filePath;
+	} else {
+		logFileStream.open(logFilePath, std::fstream::out | std::fstream::app);
+	}
+	
 	logFileStream.close();
+	return open;
+	
 }
 
 
 
 /*
-Új naplóbejegyzés írása
+Ãšj naplÃ³bejegyzÃ©s Ã­rÃ¡sa
 */
 void MKKLogger::createLog(LogLevel level, std::string message, int groupID)
 {
