@@ -24,4 +24,4 @@ LCPSTR
 A kész /Debug/MKKBallPlugin.dll fájl kell bemásolni a VirtualDJ megfelelő mappájába:
 /Documents/VirtualDJ/Plugins/VideoEffect (Ez az alapméretezett elérés Windowson)
 
-Ezután nincs más munka, csak meg kell nyitni a VirtualDJ-t, és a Video panelen, a VideoEffects-ek közül be kell kapcsolni az MKKBallPlugint. Jobb gombbal kattintva lehet előhívni a beállításokat. Ennek a kezelőfelülete a VirtualDJ sajátja.
+Ezután nincs más munka, csak meg kell nyitni a VirtualDJ-t, és az AudioEffects-ek közül be kell kapcsolni az MKKBallPlugint. Jobb gombbal kattintva lehet előhívni a beállításokat. Ennek a kezelőfelülete a VirtualDJ sajátja.
