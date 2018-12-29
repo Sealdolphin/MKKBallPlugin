@@ -15,10 +15,13 @@ DisplayData::DisplayData()
     setDisplayedState("music");
     setArtist1("Ismeretlen Előadó");
     setTitle1("Közepes minőségű szám");
-    setGenre1("Angol keringő");
-    setGenre2("Rocky");
+    setGenre1("valami keringő");
+    setGenre2("nem tudom");
     setMinLeft(2);
     setSecLeft(30);
+    setMinCurrent(34);
+    setHourCurrent(12);
+    setLadies(false);
     setTickets({"1111","2222","3333","4444"});
     setRotating(true);
     QTimer *timer = new QTimer(this);

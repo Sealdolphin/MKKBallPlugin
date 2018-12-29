@@ -46,6 +46,8 @@ public:
 	HRESULT VDJ_API OnParameter(int id);
 	HRESULT VDJ_API OnGetParameterString(int id, char *outParam, int outParamSize);
 
+	bool GetLadies() { return ladies_choice; }
+
 private:
 
 	MKKLogger logger;				//A naplózó egység
@@ -63,6 +65,7 @@ private:
 	int btnIPStatus;				//IP beállítás gomb lenyomva
 	int btnPortStatus;				//Port beállítás gomb lenyomva
 	int conSwitch_status;			//Kapcsolat váltás gomb lenyomva
+	int ladiesSwitch_status;		//Hölgyválasz váltás gomb lenyomva
 
 	//Enum a gombok típusaihoz
 protected:
@@ -71,7 +74,7 @@ protected:
 		BTN_SETADDR,				//IP Cím beállítása
 		BTN_SETPORT,				//Port beállítása
 		BTN_SETMSG,					//DJ üzenete beállítás
-		BTN_LADIES,					//Hölgyválasz (kapcsoló)
+		SWITCH_LADIES,				//Hölgyválasz (kapcsoló)
 		LABEL						//Felirat
 
 	} ID_Interface;
@@ -103,6 +106,7 @@ private:
 	json TrackData;						//A JSON struktúra
 
 	//Metaadatok
+	bool ladies;
 	double time_rem_min;				//Hátralévő idő (percek)
 	double time_rem_sec;				//Hátralévő idő (másodpercek)
 	std::string s_title;				//Szám címe

@@ -3,6 +3,7 @@
 #include <QtGlobal>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QTime>
 PacketParser::PacketParser(DisplayData* displayData) :displayData(displayData)
 {
 
@@ -28,6 +29,16 @@ static double getDouble(QJsonObject& obj, QString key)
     return 0.0;
 }
 
+static bool getBoolean(QJsonObject& obj, QString key)
+{
+    if(obj.contains(key))
+    {
+            return obj.value(key).toBool();
+    }
+    qInfo() << "Failed to get key: " << key;
+    return false;
+}
+
 void PacketParser::processPacket(QByteArray data)
 {
     qInfo() << "Packet arrived: " << data.toStdString().c_str();
@@ -46,4 +57,10 @@ void PacketParser::processPacket(QByteArray data)
     displayData->setGenre2(get(JObj,"next_song") );
     displayData->setMinLeft(getDouble(JObj,"min_left") );
     displayData->setSecLeft(getDouble(JObj,"sec_left"));
+    displayData->setLadies(getBoolean(JObj,"ladies"));
+
+    //Aktuális idő
+    QTime time = QTime::currentTime();
+    displayData->setMinCurrent(time.minute());
+    displayData->setHourCurrent(time.hour());
 }

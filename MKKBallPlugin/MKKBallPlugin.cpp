@@ -26,6 +26,8 @@ Ez a kód a VirtualDJ megnyitása során egyszer fut le!
 //-----------------------------------------------------------------------------
 HRESULT VDJ_API MKKBallMaker::OnLoad()
 {
+	SendCommand("deck 2 masterdeck");					//2. számú deck beállítása masternek
+
 	timer = Timer(1);									//Időzítő létrehozása (1 mp késleltetéssel)
 	char folder[64];									//Elérési útvonal
 	GetStringInfo("get_vdj_folder", folder, 64);		//A VirtualDJ munkamappájának lekérése (working directory)
@@ -41,17 +43,20 @@ HRESULT VDJ_API MKKBallMaker::OnLoad()
 
 	//Paraméterek betöltése (gombok)
 	DeclareParameterSwitch(&conSwitch_status, SWITCH_CONNECT, "Vetítés", "C", false);
+	DeclareParameterSwitch(&ladiesSwitch_status, SWITCH_LADIES, "Hölgyválasz", "H", false);
 	DeclareParameterButton(&btnIPStatus, BTN_SETADDR, "IP beáll", "IP");
 	DeclareParameterButton(&btnPortStatus, BTN_SETPORT, "Port beáll", "P");
 	//Gombokhoz tartozó feliratok
 	DeclareParameterString(connection_status, LABEL, "Kapcsolat", "CS", 32);
 	DeclareParameterString(ip_address, LABEL, "IP cím", "IP", 32);
 	DeclareParameterString(con_port, LABEL, "Port", "P", 16);
-	//DeclareParameterButton(&is_connected, BTN_SETMSG, "A DJ üzenete", "M");
+	
 
 	//Paraméterek inicializálása
 	is_connected = false;								//Kapcsolat a szerverrel (Offline)
+	ladies_choice = false;								//Hölgyválasz
 	conSwitch_status = 0;								//A Kapcsolat gomb állása (kikapcsolva)
+	ladiesSwitch_status = 0;							//A Hölgyválasz gomb állása (kikapcsolva)
 	strcpy(connection_status, "Offline");				//Kapcsolat felirata
 	strcpy(ip_address, "localhost");					//A vetítő szerver IP címe
 	strcpy(con_port, "5503");							//A kommunikációs port
@@ -179,9 +184,7 @@ HRESULT VDJ_API MKKBallMaker::OnParameter(int id) {
 
 		//IP cím beállítása gomb
 	case BTN_SETADDR:
-		DLGPROC dp;
 
-		hr = DialogBox(NULL, "Add meg az IP címet!", NULL, dp);
 		break;
 
 		//Port beállítása gomb
@@ -195,15 +198,16 @@ HRESULT VDJ_API MKKBallMaker::OnParameter(int id) {
 		break;
 
 		//Hölgyválasz ki-be kapcsolása
-	case BTN_LADIES:
-		
+	case SWITCH_LADIES:
+		ladies_choice = !ladies_choice;
+
 		break;
 	default:
 		break;
 	}
 
 	//Refresh strings
-	logger.createLog(INFO, "HR = " + hr);
+	//logger.createLog(INFO, "HR = " + hr);
 
 	return S_OK;
 }
@@ -247,6 +251,7 @@ MKKTrack::MKKTrack(MKKBallMaker *parent)
 	s_artist = artist;
 	s_genre = genre;
 	s_next_genre = next_genre;
+	ladies = parent->GetLadies();
 
 	//A felesleges karaktertömbök felszabadítása
 	free(title);
@@ -267,6 +272,7 @@ std::string MKKTrack::createJSON()
 	TrackData["next_song"] = s_next_genre;
 	TrackData["min_left"] = time_rem_min;
 	TrackData["sec_left"] = time_rem_sec;
+	TrackData["ladies"] = ladies;
 
 	return TrackData.dump();
 }

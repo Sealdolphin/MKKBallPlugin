@@ -1,6 +1,6 @@
 class DisplayData
 {
-    PROP(QString displayedState) // Can be "music"/"tombola"/"black"
+    PROP(QString displayedState)    // Can be "music"/"tombola"/"black"
     PROP(QString winningTicket)
     PROP(QString title1)
     PROP(QString artist1)
@@ -9,4 +9,7 @@ class DisplayData
     PROP(QString news)
     PROP(int minLeft)
     PROP(int secLeft)
+    PROP(int minCurrent)
+    PROP(int hourCurrent)
+    PROP(bool ladies)
 }
