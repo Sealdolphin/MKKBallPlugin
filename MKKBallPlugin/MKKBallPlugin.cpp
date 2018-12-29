@@ -29,8 +29,8 @@ HRESULT VDJ_API MKKBallMaker::OnLoad()
 	SendCommand("deck 2 masterdeck");					//2. számú deck beállítása masternek
 
 	timer = Timer(1);									//Időzítő létrehozása (1 mp késleltetéssel)
-	char folder[64];									//Elérési útvonal
-	GetStringInfo("get_vdj_folder", folder, 64);		//A VirtualDJ munkamappájának lekérése (working directory)
+	char folder[128];									//Elérési útvonal
+	GetStringInfo("get_vdj_folder", folder, 128);		//A VirtualDJ munkamappájának lekérése (working directory)
 	strcat(folder, "\\Plugins\\MKKData\\MKKLog.txt");	//A naplófájl elérési útvonalának elkészítése
 
 	std::string workingDir = folder;					//A naplófájl elérési útvonala
@@ -43,14 +43,18 @@ HRESULT VDJ_API MKKBallMaker::OnLoad()
 
 	//Paraméterek betöltése (gombok)
 	DeclareParameterSwitch(&conSwitch_status, SWITCH_CONNECT, "Vetítés", "C", false);
-	DeclareParameterSwitch(&ladiesSwitch_status, SWITCH_LADIES, "Hölgyválasz", "H", false);
 	DeclareParameterButton(&btnIPStatus, BTN_SETADDR, "IP beáll", "IP");
 	DeclareParameterButton(&btnPortStatus, BTN_SETPORT, "Port beáll", "P");
+	DeclareParameterSwitch(&ladiesSwitch_status, SWITCH_LADIES, "Hölgyválasz", "H", false);
 	//Gombokhoz tartozó feliratok
 	DeclareParameterString(connection_status, LABEL, "Kapcsolat", "CS", 32);
 	DeclareParameterString(ip_address, LABEL, "IP cím", "IP", 32);
 	DeclareParameterString(con_port, LABEL, "Port", "P", 16);
-	
+
+	DeclareParameterSlider(&headphone_volume, SLIDER_HEADPHONE, "Süketség", "Füles", 0.5f);
+	char headphoneCommand[32] = "";
+	sprintf(headphoneCommand, "headphone_volume %f", headphone_volume);
+	SendCommand(headphoneCommand);
 
 	//Paraméterek inicializálása
 	is_connected = false;								//Kapcsolat a szerverrel (Offline)
@@ -60,6 +64,8 @@ HRESULT VDJ_API MKKBallMaker::OnLoad()
 	strcpy(connection_status, "Offline");				//Kapcsolat felirata
 	strcpy(ip_address, "localhost");					//A vetítő szerver IP címe
 	strcpy(con_port, "5503");							//A kommunikációs port
+
+
 
 	return S_OK;
 }
@@ -125,6 +131,7 @@ A kódsorozat MINDEN egyes mintavételezésnél lefut!
 //---------------------------------------------------------------------------
 HRESULT VDJ_API MKKBallMaker::OnProcessSamples(float * buffer, int nb)
 {
+	//METAADATOK KÜLDÉSE
 	//Időzítő lekérdezése, csak másodpercenkénti futás érdekében
 	if (timer.is_alarmed()) {
 		MKKTrack nowPlaying = MKKTrack(this);				//Most játszott zeneszám lekérése
@@ -135,6 +142,15 @@ HRESULT VDJ_API MKKBallMaker::OnProcessSamples(float * buffer, int nb)
 		}
 		timer.start();										//Időzítő újraindítása
 	}
+	/*
+	char nowPlayingFile[128];
+	GetStringInfo("deck master get_filepath", nowPlayingFile, 128);
+
+	//MOST JÁTSZOTT SZÁM FRISSÍTÉSE ÉS NAPLÓZÁSA
+	if (logger.compareLastPlayed(nowPlayingFile)) {
+		logger.logNowPlaying(nowPlayingFile);
+	}
+	*/
 	return S_OK;
 }
 /*
@@ -145,10 +161,12 @@ A kód minden alkalommal lefut, ha a felhasználó a VirtualDJ-ben a plugin egy 
 HRESULT VDJ_API MKKBallMaker::OnParameter(int id) {
 
 	HRESULT hr;				//Eredményjelző
+	char headphoneCommand[32] = "";
 
 	//Ellenőrizzük a hívott paraméter adatait
 	switch (id) {
-
+	default:
+		break;
 		//Kapcsolat beállítása, vagy leállítása gomb
 	case SWITCH_CONNECT:
 
@@ -181,48 +199,31 @@ HRESULT VDJ_API MKKBallMaker::OnParameter(int id) {
 				break;
 			}
 		}
-
-		//IP cím beállítása gomb
-	case BTN_SETADDR:
-
 		break;
-
-		//Port beállítása gomb
-	case BTN_SETPORT:
-
-		break;
-
-		//DJ üzenete gomb
-	case BTN_SETMSG:
-		//TODO
-		break;
-
 		//Hölgyválasz ki-be kapcsolása
 	case SWITCH_LADIES:
 		ladies_choice = !ladies_choice;
-
 		break;
-	default:
+
+	case SLIDER_HEADPHONE:
+		sprintf(headphoneCommand, "headphone_volume %f", headphone_volume);
+		hr = SendCommand(headphoneCommand);
+		logger.createLog(INFO, headphoneCommand);
 		break;
 	}
-
-	//Refresh strings
-	//logger.createLog(INFO, "HR = " + hr);
 
 	return S_OK;
 }
 //---------------------------------------------------------------------------
 HRESULT VDJ_API MKKBallMaker::OnGetParameterString(int id, char *outParam, int outParamSize) {
+
 	switch (id)
 	{
-	default:
-	case SWITCH_CONNECT:
-		sprintf(outParam, "Yeah!");
+	case SLIDER_HEADPHONE:
+		sprintf(outParam, "%.0f%%", headphone_volume * 100);
 		break;
 	}
-
 	return S_OK;
-
 }
 
 
@@ -239,9 +240,9 @@ MKKTrack::MKKTrack(MKKBallMaker *parent)
 	char* next_genre = new char[max_length];
 
 	//VDj Script segítségével a metaadatok lekérése és átírása a lefoglalt memóriába
-	parent->GetStringInfo("deck active get_loaded_song 'title'", title, max_length);
-	parent->GetStringInfo("deck active get_loaded_song 'artist'", artist, max_length);
-	parent->GetStringInfo("deck active get_loaded_song 'genre'", genre, max_length);
+	parent->GetStringInfo("deck master get_loaded_song 'title'", title, max_length);
+	parent->GetStringInfo("deck master get_loaded_song 'artist'", artist, max_length);
+	parent->GetStringInfo("deck master get_loaded_song 'genre'", genre, max_length);
 	parent->GetStringInfo("get_automix_song 'genre'", next_genre, max_length);
 	parent->GetInfo("get_time_min 'remain'", &time_rem_min);
 	parent->GetInfo("get_time_sec 'remain'", &time_rem_sec);

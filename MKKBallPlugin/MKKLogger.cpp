@@ -10,6 +10,7 @@ Statuikus változók beállítása
 bool MKKLogger::fileBusy = false;								//Fálj írása folyamatban van-e? (szinkronizálás)
 int MKKLogger::lastID = BASIC_INFO;								//Utolsó bejegyzés típusa
 std::string MKKLogger::logFilePath = "C:\\MKKLog\\MKKLog.txt";	//Alapméretezett elérési útvonal (ha a beállítás nem működne)
+std::string MKKLogger::musicFilePath = "C:\\MKKLog\\MKKMusic.txt";
 
 /*
 A Naplóbejegyzés szintjének átírása a naplóba.
@@ -45,6 +46,7 @@ int MKKLogger::generateLogFile(std::string filePath, int intervals)
 	} else {
 		logFileStream.open(logFilePath, std::fstream::out | std::fstream::app);
 	}
+	last_played = "";
 	
 	logFileStream.close();
 	return open;
@@ -86,3 +88,19 @@ void MKKLogger::createLog(LogLevel level, std::string message, int groupID)
 	//Erőforrás felszabadítása
 	fileBusy = false;
 }
+
+void MKKLogger::logNowPlaying(std::string trackName)
+{
+	logFileStream.open(musicFilePath, std::fstream::out | std::fstream::app);
+	logFileStream << trackName.c_str() << std::endl;
+	logFileStream.close();	//Memória felszabadítása
+
+	last_played = trackName;
+}
+
+bool MKKLogger::compareLastPlayed(std::string trackName)
+{
+	return trackName == last_played;
+}
+
+

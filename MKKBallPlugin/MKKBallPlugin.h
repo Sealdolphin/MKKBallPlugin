@@ -60,6 +60,7 @@ private:
 	char connection_status[64];		//Kapcsolat a szerverrel (felirat)
 	bool ladies_choice;				//Hölgyválasz állapota
 	bool is_connected;				//Kapcsolat állapota
+	float headphone_volume;			//Fejhallgató hangereje
 
 	//Gomb Státuszok
 	int btnIPStatus;				//IP beállítás gomb lenyomva
@@ -75,6 +76,7 @@ protected:
 		BTN_SETPORT,				//Port beállítása
 		BTN_SETMSG,					//DJ üzenete beállítás
 		SWITCH_LADIES,				//Hölgyválasz (kapcsoló)
+		SLIDER_HEADPHONE,			//Fejhallgató
 		LABEL						//Felirat
 
 	} ID_Interface;

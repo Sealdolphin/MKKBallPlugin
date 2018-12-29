@@ -34,10 +34,13 @@ class MKKLogger
 public:
 	int generateLogFile(std::string filePath, int intervals = 1);
 	void createLog(LogLevel level, std::string message, int groupID = BASIC_INFO);
+	void logNowPlaying(std::string trackName);
+	bool compareLastPlayed(std::string trackName);
 
 private:
 	
 	static std::string logFilePath;
+	static std::string musicFilePath;
 	static bool fileBusy;
 
 	std::fstream logFileStream;
@@ -45,4 +48,5 @@ private:
 	time_t lastLog;
 	static int lastID;
 
+	std::string last_played;
 };
