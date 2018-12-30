@@ -19,7 +19,7 @@ signals:
 
 private:
     QRemoteObjectNode connection;
-    QSharedPointer<DisplayDataReplica> data;
+    QSharedPointer<QRemoteObjectDynamicReplica> data;
     QQmlContext* context;
 };
 

@@ -13,7 +13,7 @@ void ROClient::connect(QString text)
     {
         qCritical() << "Failed to connect: " << connection.lastError();
     }
-    data.reset(connection.acquire<DisplayDataReplica>("mainData"));
+    data.reset(connection.acquireDynamic("mainData"));
     auto f = [=](){
         qInfo() << "Remote object initialized successfully";
         context->setContextProperty("mainData",data.get());
