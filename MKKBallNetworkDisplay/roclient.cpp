@@ -8,7 +8,7 @@ ROClient::ROClient(QQmlContext* context) :context(context)
 void ROClient::connect(QString text)
 {
     QUrl url("tcp://" + text);
-    qInfo() << "Connectiong to: " << url.toString();
+    qInfo() << "Connecting to: " << url.toString();
     if(!connection.connectToNode(url))
     {
         qCritical() << "Failed to connect: " << connection.lastError();

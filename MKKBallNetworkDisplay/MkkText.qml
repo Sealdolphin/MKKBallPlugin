@@ -6,6 +6,7 @@ Text {
     property double cXR: 0.1
     property double cYR: 0.1
     property var window
+    property int charPosition: 0
 
     x: mainSettings.getX(cname,cXR,window.height)
     y: mainSettings.getY(cname,cYR,window.height)

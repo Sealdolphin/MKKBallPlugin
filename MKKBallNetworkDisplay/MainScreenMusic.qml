@@ -1,9 +1,7 @@
 import QtQuick 2.0
-//Zenelejátszó képernyő elemei
+
 Item {
-    //Gyökérelem
     id: root
-    //Idő átkonvertálása szövegformátumba
     function formatTime(timeBit){
         var r = "" + timeBit;
         while (r.length < 2) {
@@ -12,15 +10,6 @@ Item {
         return r;
     }
 
-    //Hölgyválasz szöveg
-    function ladiesChoice(ladies){
-        if(ladies){
-            return "Ez a szám Hölgyválasz";
-        }
-        return "";
-    }
-
-    //Háttérkép
     Image {
         anchors.fill: parent
         fillMode: Image.PreserveAspectCrop
@@ -28,7 +17,6 @@ Item {
         source: (mainSettings.bgImage.length > 0) ? mainSettings.bgImage : ""
     }
 
-    //Most Játszott felirat
     MkkText {
         id: currentlyPlayedLabel
         cname: "currentlyPlayedLabel"
@@ -38,29 +26,15 @@ Item {
         window: root
     }
 
-    //Most játszott tánc stílusa
-    /*
-    MkkText {
-        id: currentlyPlayedGenre
-        cname: "currentlyPlayedGenre"
-        cXR: 0.45
-        cYR: 0.05
-        text: mainData.genre1
-        window: root
-    }
-    */
-
-    //Most játszott tánc hátralévő idő
     MkkText {
         id: currentlyPlayedTimeLeft
         cname: "currentlyPlayedTimeLeft"
-        cXR: 1.1
+        cXR: 1.05
         cYR: 0.15
         text: mainData.minLeft + ":" + root.formatTime(mainData.secLeft)
         window: root
     }
 
-    //Most játszott tánc előadó és cím
     MkkText {
         id: currentlyPlayed
         cname: "currentlyPlayed"
@@ -72,7 +46,6 @@ Item {
         window: root
     }
 
-    //Következő tánc felirat
     MkkText {
         id: nextPlayedLabel
         cname: "nextPlayedLabel"
@@ -82,29 +55,15 @@ Item {
         window: root
     }
 
-    //Következő tánc stílusa
-    /*
-    MkkText {
-        id: nextPlayedGenre
-        cname: "nextPlayedGenre"
-        cXR: 0.60
-        cYR: 0.75
-        text: mainData.genre2
-        window: root
-    }
-    */
-
-    //A DJ üzenete
     MkkText {
         id: news
         cname: "messageOfDJ"
         cXR: 0.05
-        cYR: 0.875
+        cYR: 0.875     
         text: mainData.news
         window: root
     }
 
-    //Aktuális idő
     MkkText {
         id: currentTime
         cname: "timeNow"
@@ -114,13 +73,12 @@ Item {
         window: root
     }
 
-    //Hölgyválasz
     MkkText {
         id: ladies
         cname: "ladies"
         cXR: 0.05
         cYR: 0.57
-        text: root.ladiesChoice(mainData.ladies)
+        text: mainData.ladies ? "Ez a szám Hölgyválasz" : ""
         window: root
     }
 }

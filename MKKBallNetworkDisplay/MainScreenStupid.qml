@@ -67,6 +67,7 @@ Rectangle {
             anchors.centerIn: parent
             font.pixelSize: root.height  * root.fontSize
             text: "Tombola húzás folyamatban!"
+            wrapMode: Text.WordWrap
             color: "white"
             visible: mainData.displayedState === "tombola"
         }

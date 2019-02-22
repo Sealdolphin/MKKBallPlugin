@@ -26,7 +26,7 @@ Ez a kód a VirtualDJ megnyitása során egyszer fut le!
 //-----------------------------------------------------------------------------
 HRESULT VDJ_API MKKBallMaker::OnLoad()
 {
-	SendCommand("deck 2 masterdeck");					//2. számú deck beállítása masternek
+	SendCommand("deck right masterdeck");					//2. számú deck beállítása masternek
 
 	timer = Timer(1);									//Időzítő létrehozása (1 mp késleltetéssel)
 	char folder[128];									//Elérési útvonal
@@ -135,22 +135,14 @@ HRESULT VDJ_API MKKBallMaker::OnProcessSamples(float * buffer, int nb)
 	//Időzítő lekérdezése, csak másodpercenkénti futás érdekében
 	if (timer.is_alarmed()) {
 		MKKTrack nowPlaying = MKKTrack(this);				//Most játszott zeneszám lekérése
-		logger.createLog(INFO, "Sample processed");			//Mintavételezés naplózása
-		
+		//
+		//logger.createLog(INFO, "Sample processed");			//Mintavételezés naplózása
+
 		if (is_connected == TRUE) {
 			network.send_message(nowPlaying.createJSON());	//Metaadatok küldése, ha a kapcsolat fenáll
 		}
 		timer.start();										//Időzítő újraindítása
 	}
-	/*
-	char nowPlayingFile[128];
-	GetStringInfo("deck master get_filepath", nowPlayingFile, 128);
-
-	//MOST JÁTSZOTT SZÁM FRISSÍTÉSE ÉS NAPLÓZÁSA
-	if (logger.compareLastPlayed(nowPlayingFile)) {
-		logger.logNowPlaying(nowPlayingFile);
-	}
-	*/
 	return S_OK;
 }
 /*
@@ -208,7 +200,7 @@ HRESULT VDJ_API MKKBallMaker::OnParameter(int id) {
 	case SLIDER_HEADPHONE:
 		sprintf(headphoneCommand, "headphone_volume %f", headphone_volume);
 		hr = SendCommand(headphoneCommand);
-		logger.createLog(INFO, headphoneCommand);
+		//logger.createLog(INFO, headphoneCommand);
 		break;
 	}
 
@@ -240,9 +232,9 @@ MKKTrack::MKKTrack(MKKBallMaker *parent)
 	char* next_genre = new char[max_length];
 
 	//VDj Script segítségével a metaadatok lekérése és átírása a lefoglalt memóriába
-	parent->GetStringInfo("deck master get_loaded_song 'title'", title, max_length);
-	parent->GetStringInfo("deck master get_loaded_song 'artist'", artist, max_length);
-	parent->GetStringInfo("deck master get_loaded_song 'genre'", genre, max_length);
+	parent->GetStringInfo("deck right get_loaded_song 'title'", title, max_length);
+	parent->GetStringInfo("deck right get_loaded_song 'artist'", artist, max_length);
+	parent->GetStringInfo("deck right get_loaded_song 'genre'", genre, max_length);
 	parent->GetStringInfo("get_automix_song 'genre'", next_genre, max_length);
 	parent->GetInfo("get_time_min 'remain'", &time_rem_min);
 	parent->GetInfo("get_time_sec 'remain'", &time_rem_sec);

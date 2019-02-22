@@ -144,7 +144,11 @@ Window {
         y: 42
         width: 423
         height: 20
-        text: qsTr("Jó a buli ŰÜ üű őö Őö é É")
+        text: qsTr("Ide kerül a DJ üzenete.")
+        echoMode: TextInput.Normal
+        passwordCharacter: "\u25cf"
+        autoScroll: true
+        clip: false
         font.pixelSize: 20
     }
 

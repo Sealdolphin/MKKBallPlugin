@@ -100,7 +100,9 @@ void MKKLogger::logNowPlaying(std::string trackName)
 
 bool MKKLogger::compareLastPlayed(std::string trackName)
 {
-	return trackName == last_played;
+	if (trackName == last_played) return true;
+	last_played = trackName;
+	return false;
 }
 
 
