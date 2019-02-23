@@ -17,7 +17,7 @@ Window {
         y: 32
         text: qsTr("Toggle FullScreen")
         onReleased: {
-            console.log("AAAAA");
+            console.log("Fullscreen toggled");
             if (mainWindow.visibility === Window.FullScreen)
             {
                 mainWindow.visibility = Window.Windowed;
@@ -106,7 +106,7 @@ Window {
             mainData.loadTombola(fileDialog.fileUrl)
         }
         onRejected: {
-            console.log("Canceled")
+            console.log("Import Canceled")
         }
     }
 
@@ -169,7 +169,7 @@ Window {
         text: qsTr("Töröl")
         onReleased: {
             mainData.news = ""
-            newsInput.text = ""
+            //newsInput.text = ""
         }
 
     }

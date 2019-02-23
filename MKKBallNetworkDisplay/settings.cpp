@@ -23,12 +23,12 @@ QString Settings::getFontColor(QString name)
 
 int Settings::getX(QString name, double xr, int windowHeight)
 {
-    return getValue(name,"/X",xr).toDouble() * windowHeight;
+    return getValue(name,"/X",xr).toDouble();
 }
 
 int Settings::getY(QString name, double yr, int windowHeight)
 {
-    return  getValue(name,"/Y",yr).toDouble() * windowHeight;
+    return  getValue(name,"/Y",yr).toDouble();
 
 }
 
