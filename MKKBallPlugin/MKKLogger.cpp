@@ -5,7 +5,7 @@ Ez az MKK pluginhoz írt naplózó osztály.
 */
 
 /*
-Statuikus változók beállítása
+Statikus változók beállítása
 */
 bool MKKLogger::fileBusy = false;								//Fálj írása folyamatban van-e? (szinkronizálás)
 int MKKLogger::lastID = BASIC_INFO;								//Utolsó bejegyzés típusa
@@ -19,13 +19,13 @@ Ez a függvény a megfelelő szintből egy hasonló szöveget készít
 std::string LevelToString(LogLevel level) {
 	switch (level) {
 	default:
-	case LL_ERROR:
+	case LogLevel::ERR:
 		return "ERROR";
-	case WARNING:
+	case LogLevel::WARNING:
 		return "WARNING";
-	case INFO:
+	case LogLevel::INFO:
 		return "INFO";
-	case UPDATE:
+	case LogLevel::UPDATE:
 		return "UPDATE";
 	}
 }

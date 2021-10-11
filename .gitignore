@@ -4,7 +4,6 @@
 #Do not exclude .cpp and .h files
 !*.cpp
 !*.h
-!*.py
 
 #Also need the .dll-s
 !*.dll
@@ -18,5 +17,8 @@
 
 #Dont need the Qt build-servers
 /build-Server*
+release
+debug
+bin
 
 build-*

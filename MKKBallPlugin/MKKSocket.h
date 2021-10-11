@@ -4,7 +4,6 @@ The class Network has all the required information and function to solve two-way
 
 To use this specified library you must have windows.h and winsock2.h installed and properly linked.
 **/
-
 #ifndef NETWORK_H
 #define NETWORK_H
 
@@ -46,13 +45,12 @@ class Network {
 
 public:
 	//Public constructor of the Network class. A network is required to have a domain name.
-	Network(string dom = "") :ConnectSocket(INVALID_SOCKET), addr_result(NULL),
+	Network(string domain_string = "") :ConnectSocket(INVALID_SOCKET), addr_result(NULL),
 		addr_ptr(NULL), recvbuflen(0), domain(NULL), port(NULL), self_id(net_id++) {
-		if (dom != "") {
-			domain = new char[dom.size()];
-			strcpy(domain, dom.c_str());
+		if (domain_string != "") {
+			domain = new char[domain_string.size()];
+			strcpy_s(domain, domain_string.size(), domain_string.c_str());
 		}
-
 	}
 
 	//Initializes the Network parameters and other services (such as WSA)
@@ -76,29 +74,29 @@ private:
 	//PREMADE VARIABLES FROM WINSOCK EXAMPLE
 
 	//The WSAData stored in the class. This is updated during WSAStartup.
-	WSADATA wsaData;
+	WSADATA wsaData = WSADATA();
 	//The socket used for the connection.
 	SOCKET ConnectSocket;
 	//Information about the server address
 	//typedef struct addrinfo was declared
 	addrinfo *addr_result;
 	addrinfo *addr_ptr;
-	addrinfo addr_hints;
+	addrinfo addr_hints = addrinfo();
 	//The buffer going to be sent
-	char* sendbuffer;
+	char* sendbuffer = nullptr;
 	//The buffer to be filled with the incoming response
-	char receivebuffer[DEFAULT_BUFLEN];
+	char receivebuffer[DEFAULT_BUFLEN] = {};
 	//Contains information about various helper and sub-functions
-	int info_result;
+	int info_result = 0;
 	//The length of the receivebuffer
-	int recvbuflen;
+	int recvbuflen = 0;
 
 	//ADDITIONAL VARIABLES
 	
 	//The domain name of the server
-	char* domain;
+	char* domain = nullptr;
 	//The port of the server
-	char* port;
+	char* port = nullptr;
 	//Used for generating unique ID-s for different connections
 	static int net_id;
 	//The unique ID of the network

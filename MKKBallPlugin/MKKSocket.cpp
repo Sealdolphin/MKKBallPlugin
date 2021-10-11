@@ -50,13 +50,14 @@ int Network::resolve(string server, string arg_port) {
 		}
 	}
 	else {
+		
 		if (domain != nullptr) delete[] domain;
-		domain = new char[server.size() + 1];
-		strcpy(domain, server.c_str());
+		domain = new char[server.size()];
+		strcpy_s(domain, strlen(server.c_str()) + 1, server.c_str());
 	}
 	if (port != nullptr) delete[] port;
-	port = new char[arg_port.size() + 1];
-	strcpy(port, arg_port.c_str());
+	port = new char[arg_port.size()];
+	strcpy_s(port, strlen(arg_port.c_str()) + 1, arg_port.c_str());
 
 	//Resolving given domain name
 	info_result = getaddrinfo(domain, port, &addr_hints, &addr_result);
@@ -108,22 +109,28 @@ int Network::connect_server(void) {
 }
 //-------------------------------------------------------------------------
 int Network::send_message(string msg) {
-	//Sent message is null or empty
-	if (msg == "0") return ERR_NULLMSG;
-	//Clearing sendbuffer and filling with the message
-	if (sendbuffer != nullptr) delete[] sendbuffer;
-	sendbuffer = new char[msg.length() + 1];
-	strcpy(sendbuffer, msg.c_str());
-	sendbuffer[msg.length()] = 0;
 
-	//send buffer through the network
-	info_result = send(ConnectSocket, sendbuffer, (int)strlen(sendbuffer) + 1, 0);
+	try {
+		//Sent message is null or empty
+		if (msg == "0") return ERR_NULLMSG;
+		//Clearing sendbuffer and filling with the message
+		if (sendbuffer != nullptr) delete[] sendbuffer;
+		sendbuffer = new char[msg.length()];
+		strcpy_s(sendbuffer, strlen(msg.c_str()) + 1, msg.c_str());
+		sendbuffer[msg.length()] = 0;
 
-	if (info_result == SOCKET_ERROR) {
-		//Sending failed. 
-		closesocket(ConnectSocket);
-		WSACleanup();
-		return ERR_SEND_FAIL;
+		//send buffer through the network
+		info_result = send(ConnectSocket, sendbuffer, (int)strlen(sendbuffer), 0);
+
+		if (info_result == SOCKET_ERROR) {
+			//Sending failed. 
+			closesocket(ConnectSocket);
+			WSACleanup();
+			return ERR_SEND_FAIL;
+		}
+	}
+	catch (std::exception error) {
+		
 	}
 
 	return ERR_NOERR;
@@ -167,7 +174,7 @@ Network::~Network() {
 	closesocket(ConnectSocket);
 	WSACleanup();
 	if (sendbuffer != nullptr) delete[] sendbuffer;
-	delete[] domain;
-	delete[] port;
+	if (domain != nullptr) delete[] domain;
+	if (port != nullptr) delete[] port;
 }
 //-------------------------------------------------------------------------

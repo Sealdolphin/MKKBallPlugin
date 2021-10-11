@@ -9,11 +9,11 @@ INFO: alapvetõ információ
 UPDATE: státuszváltozás, metainformáció
 LL_ERROR: végzetes hiba
 */
-enum LogLevel {
+enum class LogLevel {
 	WARNING,
 	INFO,
 	UPDATE,
-	LL_ERROR
+	ERR
 };
 
 

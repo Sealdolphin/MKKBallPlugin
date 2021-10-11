@@ -13,17 +13,19 @@ A metaadatok maximális hossza 64 karakter
 
 Verziószám: 2.1
 */
-#define PLUGIN_VER "2.1"	//A plugin verziószáma
+#define PLUGIN_VER "3.0"	//A plugin verziószáma
 
 // we include stdio.h only to use the sprintf() function
 // we define _CRT_SECURE_NO_WARNINGS for the warnings of the sprintf() function
 #define _CRT_SECURE_NO_WARNINGS
+#define IDM_MODAL 2
 
 #include "vdjDsp8.h"
 #include "MKKLogger.h"
 #include "json.hpp"
 
 #include "timer.h"
+#include "resource.h"
 
 using json = nlohmann::json;
 
@@ -38,6 +40,7 @@ public:
 
 	HRESULT VDJ_API OnLoad();
 	HRESULT VDJ_API OnGetPluginInfo(TVdjPluginInfo8 *infos);
+	HRESULT VDJ_API OnGetUserInterface(TVdjPluginInterface8* pluginInterface);
 	ULONG VDJ_API Release();
 	HRESULT VDJ_API OnStart();
 	HRESULT VDJ_API OnStop();
@@ -48,9 +51,9 @@ public:
 
 	bool GetLadies() { return ladies_choice; }
 
-private:
-
 	MKKLogger logger;				//A naplózó egység
+
+private:
 	Timer timer;					//Az időzítő (overflow ellen kell, mert a nagyobb terhelést nehezen viseli a szerver)
 
 	//Gombok
@@ -67,6 +70,13 @@ private:
 	int btnPortStatus;				//Port beállítás gomb lenyomva
 	int conSwitch_status;			//Kapcsolat váltás gomb lenyomva
 	int ladiesSwitch_status;		//Hölgyválasz váltás gomb lenyomva
+
+	//Interface
+	HWND pluginWindow = NULL;
+	static BOOL CALLBACK DeleteItemProc(HWND hwndDlg,
+		UINT message,
+		WPARAM wParam,
+		LPARAM lParam);
 
 	//Enum a gombok típusaihoz
 protected:
@@ -115,7 +125,6 @@ private:
 	std::string s_artist;				//Előadó
 	std::string s_genre;				//Szám stílusa (milyen tánc)
 	std::string s_next_genre;			//Következő szám stílusa (milyen tánc)
-
 };
 
-#endif
+#endif MYPLUGIN8_H
